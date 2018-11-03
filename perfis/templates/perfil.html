@@ -10,7 +10,9 @@
       <br>
       <a href="mailto:{{perfil.email}}">{{perfil.email}}</a>
     </address>
+    {% if not ja_eh_contato and not eu_mesmo%}
     <a href="{% url 'convidar' perfil.id %}">convidar</a>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

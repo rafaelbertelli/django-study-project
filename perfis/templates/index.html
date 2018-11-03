@@ -6,6 +6,7 @@
     <div class="panel-heading">
       <strong>Todos os Perfis</strong>
     </div>
+
     {% if perfis %}
     <ul>
       {% for perfil in perfis %}
@@ -17,6 +18,60 @@
     {% else %}
     <p>Nenhum Perfil encontrado</p>
     {% endif %}
+
+    <div class="panel-default">
+      {% with total_de_convites=perfil_logado.convites_recebidos.count %}
+        {% if total_de_convites %}
+        <div class='panel-heading'>
+          <p>
+            <strong>Você tem {{ total_de_convites }} convite{{ total_de_convites |pluralize }} aguardando aprovação</strong>
+          </p>
+          <ul>
+            {% for convite in perfil_logado.convites_recebidos.all %}
+            <li class='list-group-item'>
+              {{ convite.solicitante.nome }}
+              <div class='pull-right'>
+                <a href='{% url "aceitar" convite.id %}'>aceitar</a>
+                &nbsp;
+                <a href='{% url "deletar" convite.id %}'>deletar</a>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
+        <div class='panel-body'>
+          <p>Nenhum convite recebido</p>
+        </div>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="panel-default">
+      {% with total_de_contatos=perfil_logado.contatos.count %}
+        {% if total_de_contatos %}
+        <div class='panel-heading'>
+          <p>
+            <strong>Você tem {{ total_de_contatos }} contatos{{ total_de_contatos |pluralize }}</strong>
+          </p>
+          <ul>
+            {% for contato in perfil_logado.contatos.all %}
+            <li class='list-group-item'>
+              <a href='{% url "exibir" contato.id %}'>
+                {{ contato.solicitante.nome }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
+        <div class='panel-body'>
+          <p>Você não possui contatos</p>
+        </div>
+        {% endif %}
+      {% endwith %}
+    </div>
+    
   </div>
 </div>
 {% endblock %}
